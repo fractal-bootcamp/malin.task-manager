@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import type { TaskProps, TaskStatus } from '@/types/types'
 import { dummyTasks } from '@/lib/utils/dummyData'
 
-type TaskState = {
+export type TaskState = {
   tasks: TaskProps[]
   createTask: (task: TaskProps) => void;
   deleteTask: (taskId: string) => void;
@@ -10,8 +10,8 @@ type TaskState = {
   updateTaskStatus: (taskId: string, newTaskStatus: TaskStatus) => void;
 }
 
-export const TaskStore = create<TaskState>((set) => ({
-  tasks: dummyTasks,  // Initialize empty array
+export const taskStore = create<TaskState>((set) => ({
+  tasks: dummyTasks,  // dummy array
   createTask: (task: TaskProps) => set(
     (state) => ({ tasks: [...state.tasks, task] })),
   deleteTask: (taskId: string) => set(
