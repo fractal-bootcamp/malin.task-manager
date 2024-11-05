@@ -28,7 +28,7 @@ interface TaskCardProps {
 
 export function TaskCard({ title, description, onEdit, onDelete }: TaskCardProps) {
   return (
-    <Card className="w-[350px] shadow-md hover:shadow-lg transition-shadow duration-200">
+    <Card className="w-full shadow-md hover:shadow-lg transition-shadow duration-200 dark:bg-slate-200">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
         <DropdownMenu>
