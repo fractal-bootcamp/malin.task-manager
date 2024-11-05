@@ -27,9 +27,9 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className="antialiased bg-slate-400 text-black dark:bg-gray-900 dark:text-white">
-        <nav className="border-b px-4 py-3 dark:border-gray-700">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <body className="antialiased">
+        <nav className="border-b px-4 py-3 dark:border-gray-700 bg-lime-50">
+          <div className="max-w-7xl mx-auto flex items-center justify-between text-black dark:bg-gray-900 dark:text-white">
             <h1 className="font-mono text-3xl">Manage Them Tasks</h1>
             <div className="flex gap-4">
               <button
