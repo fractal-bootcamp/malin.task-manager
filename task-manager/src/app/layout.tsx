@@ -30,7 +30,7 @@ export default function RootLayout({
       <body className="antialiased bg-slate-400 text-black dark:bg-gray-900 dark:text-white">
         <nav className="border-b px-4 py-3 dark:border-gray-700">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
-            <h1 className="font-bold text-xl">Task Manager</h1>
+            <h1 className="font-mono text-3xl">Manage Them Tasks</h1>
             <div className="flex gap-4">
               <button
                 onClick={toggleTheme}
