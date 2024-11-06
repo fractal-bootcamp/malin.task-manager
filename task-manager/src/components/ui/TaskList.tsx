@@ -18,7 +18,7 @@ export const TaskList: React.FC<TaskListProps> = ({ byStatus, bgColor = 'bg-gray
   console.log(`Tasks with status ${byStatus}:`, tasksOfThisStatus);
 
   return (
-    <div className={`flex-1 flex-col mx-2 my-2 ${bgColor} p-4 rounded-2xl`}>
+    <div className={`flex-1 flex-col  my-2 ${bgColor} p-4 rounded-2xl max-w-[18rem]`}>
       <p className="flex text-lg font-bold my-2 justify-start">{byStatus}</p>
       <Droppable droppableId={byStatus}>
         {(provided) => (
