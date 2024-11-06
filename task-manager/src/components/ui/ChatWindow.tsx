@@ -29,7 +29,7 @@ export function ChatWindow() {
     <div className="flex flex-col h-full bg-neutral-50">
       {/* Header */}
       <div className="p-4 border-b">
-        <h3 className="font-semibold">AI Chat Assistant</h3>
+        <h3 className="font-semibold">Task Manager Assistant</h3>
       </div>
 
       {/* Messages */}
