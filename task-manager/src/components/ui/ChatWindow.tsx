@@ -26,7 +26,7 @@ export function ChatWindow() {
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-neutral-50">
       {/* Header */}
       <div className="p-4 border-b">
         <h3 className="font-semibold">AI Chat Assistant</h3>
@@ -41,8 +41,8 @@ export function ChatWindow() {
           >
             <div
               className={`max-w-[80%] p-3 rounded-lg ${message.isUser
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-100 text-gray-800'
+                ? 'bg-rose-50 text-gray'
+                : 'bg-green-100 text-gray'
                 }`}
             >
               {message.text}
@@ -54,20 +54,24 @@ export function ChatWindow() {
       {/* Input */}
       <div className="p-4 border-t">
         <div className="flex space-x-2">
-          <input
-            type="text"
+          <textarea
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-            className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault()
+                handleSend()
+              }
+            }}
+            className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 h-24 resize-none"
             placeholder="Type a message..."
           />
-          <button
+          {/* <button
             onClick={handleSend}
             className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
           >
             Send
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

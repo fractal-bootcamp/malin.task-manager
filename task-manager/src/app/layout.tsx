@@ -59,7 +59,7 @@ export default function RootLayout({
           </div>
         </nav>
         {children}
-        <div className="fixed bottom-4 right-4 max-w-[18rem] h-[87vh] bg-white rounded-lg shadow-lg">
+        <div className="fixed bottom-4 right-4 w-full max-w-[18rem] h-[87vh] bg-white rounded-lg shadow-lg opacity-80">
           <ChatWindow />
         </div>
         <CreateNewTaskModal />
