@@ -26,6 +26,7 @@ export function CreateNewTaskModal() {  // Use the imported type
       status: (document.getElementById('status') as HTMLSelectElement).value as TaskStatus
     }
     createTask(newTask);
+    setCreateModalOpen(false);
   }
 
   return (
