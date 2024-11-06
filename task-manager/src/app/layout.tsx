@@ -36,13 +36,6 @@ export default function RootLayout({
         <nav className="border-b px-4 py-3 dark:border-gray-700 bg-lime-50">
           <div className="w-full flex items-center justify-between text-black dark:bg-gray-900 dark:text-white">
             <h1 className="font-mono text-3xl">Manage Them Tasks</h1>
-            <div>
-              <button
-                className="px-4 py-2 bg-red-300 text-white rounded-md hover:bg-pink-600 border-4 border-red-400"
-                onClick={() => setCreateModalOpen(true)}>
-                Plan With AI
-              </button>
-            </div>
             <div className="flex gap-4 ">
               <button
                 className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
