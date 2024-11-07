@@ -38,7 +38,7 @@ export function ChatWindow() {
 
 
   // Use the client.chat.completions.create method to send a prompt and extract the data into the Zod object
-  async function extractTasksFromMessage(message: string): Promise<AssistantResponse> {
+  async function extractTasksFromMessage(message: string): Promise<InstructorResponse> {
     try {
       const response = await fetch('/api/extract-tasks', {
         method: 'POST',
@@ -48,45 +48,68 @@ export function ChatWindow() {
         body: JSON.stringify({ message }),
       });
 
-      const data: AssistantResponse = await response.json();
+      const data: InstructorResponse = await response.json();
       console.log('recieved', data)
-
-      // validate the response against our schema using zod
-      const validatedData = AssistantResponseSchema.parse(data);
-      return validatedData;
+      return { tasks: data.tasks }
     } catch (error) {
       console.error('Error extracting tasks:', error);
-      return { tasks: [], agentResponse: 'Error extracting tasks' };
+      return { tasks: [] };
+    }
+  }
+
+  async function generateResponse(tasks: TaskNoID[], message: string): Promise<string> {
+    try {
+      const response = await fetch('/api/generate-response', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ tasks }),
+      });
+      const data: AssistantResponse = await response.json();
+      return data.agentResponse;
+    } catch (error) {
+      console.error('Error generating response:', error);
+      return 'Error generating response';
     }
   }
 
   const handleSend = async () => {
     if (inputText.trim()) {
-      const newMessage: Message = {
-        id: Date.now(),
+
+      setIsTasksAdded(false) // Reset the state for new message
+      setIsLoading(true)  // Show loading state
+      const userMessage: Message = {
+        msgId: Date.now(),
         text: inputText,
         isUser: true
       }
       setMessages([...messages, newMessage])
       setInputText('')
 
-      setIsLoading(true)
-
       try {
         // Logic to handle the AI response
         if (userMessage) {
-          const extractTasks = await extractTasksFromMessage(userMessage.text)
-          console.log('we got this response:', extractTasks)
+          // First, extract tasks
+          const extractedTasks = await extractTasksFromMessage(userMessage.text);
+          setBufferTasks(extractedTasks.tasks);
+          console.log(extractedTasks)
+
+          // Then, generate response based on those tasks
+          const agentResponse = await generateResponse(extractedTasks.tasks, userMessage.text);
+          console.log(agentResponse)
           const agentMessage: Message = {
             msgId: Date.now(),
-            text: extractTasks.agentResponse,
+            text: agentResponse,
             isUser: false
-          }
+          };
+
           setMessages(prev => [...prev, agentMessage]);
-          setBufferTasks(extractTasks.tasks)
         }
+      } catch (error) {
+        console.error('Error:', error);
       } finally {
-        setIsLoading(false)  // This ensures loading is set to false even if an error occurs
+        setIsLoading(false);
       }
 
     }
@@ -99,7 +122,7 @@ export function ChatWindow() {
   }
 
   return (
-    <div className="flex flex-col h-full bg-neutral-50">
+    <div className="flex flex-col h-full bg-neutral-50 rounded-3xl">
       {/* Header */}
       <div className="p-4 border-b">
         <h3 className="font-semibold">AI Chat Assistant</h3>
@@ -121,7 +144,7 @@ export function ChatWindow() {
               >
                 {message.text.replace(/\\n/g, '\n')}
               </div>
-              {!message.isUser && (
+              {!message.isUser && bufferTasks && bufferTasks.length > 0 && (
                 <button
                   className={`mt-2 px-4 py-2 bg-blue-400 text-white rounded-md w-fit
                     hover:bg-rose-400 active:bg-rose-700 active:transform active:scale-95 
@@ -129,7 +152,8 @@ export function ChatWindow() {
                     ${isTasksAdded ? 'opacity-0' : 'opacity-100'}`}
                   onClick={() => {
                     setIsTasksAdded(true);
-                    setTimeout(handleAddTasks, 300);
+                    const timeoutId = setTimeout(handleAddTasks, 300);
+                    return () => clearTimeout(timeoutId);
                   }}
                 >
                   Add To Tasks
@@ -155,14 +179,14 @@ export function ChatWindow() {
             className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 h-24 resize-none"
             placeholder="Type a message..."
           />
-          {/* <button
-            onClick={handleSend}
-            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-          >
-            Send
-          </button> */}
         </div>
       </div>
+
+      {isLoading && (
+        <div className="flex items-center justify-center p-4">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+        </div>
+      )}
     </div>
   )
 }
