@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -11,13 +12,14 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { TaskProps, TaskStatus } from "@/types/types"
-import { taskStore } from "@/app/store/TaskStore"
-import type { TaskCardProps } from "./TaskCard";  // Import the type
+import { useTaskStore } from "@/app/store/TaskStore"
+import type { TaskCardProps } from "@/types/types";  // Import the type
 
 export function EditTaskModal({
   task,
   onUpdate,
 }: TaskCardProps) {  // Use the imported type
+  const [open, setOpen] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,10 +34,11 @@ export function EditTaskModal({
 
     console.log('Submitting updated task:', updatedTask);
     onUpdate(task.id, updatedTask);
+    setOpen(false);
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" size="sm">Edit</Button>
       </DialogTrigger>

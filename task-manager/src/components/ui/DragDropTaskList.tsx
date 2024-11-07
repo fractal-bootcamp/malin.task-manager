@@ -26,7 +26,7 @@ export function DragDropTaskList() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="flex space-x-4">
+      <div className="flex space-x-3">
         <TaskList byStatus="Pending" bgColor="bg-blue-100" />
         <TaskList byStatus="In-Progress" bgColor="bg-indigo-100" />
         <TaskList byStatus="Completed" bgColor="bg-purple-100" />
