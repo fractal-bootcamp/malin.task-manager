@@ -46,9 +46,41 @@ export const AssistantResponseSchema = z.object({
     #`)
 })
 
+export const EpicSchema = z.object({
+  id: z.string(),
+  description: z.string(),
+  tasks: z.array(TaskSchema)
+})
+
+export const AllEpicsSchema = z.array(EpicSchema);
+
+const EpicStoreSchema = z.object({
+  epics: z.array(EpicSchema),
+  tasks: z.array(TaskSchema),
+  createEpic: z.function()
+    .args(EpicSchema.omit({ id: true }))
+    .returns(z.void()),
+  deleteEpic: z.function()
+    .args(EpicSchema.pick({ id: true }))
+    .returns(z.void()),
+  addTaskToEpic: z.function()
+    .args(
+      EpicSchema.pick({ id: true }), 
+      TaskSchema.pick({ id: true }))
+    .returns(z.void()),
+  removeTaskFromEpic: z.function()
+    .args(
+      EpicSchema.pick({ id: true }), 
+      TaskSchema.pick({ id: true }))
+    .returns(z.void()),
+})
+
 // Types
 export type Task = z.infer<typeof TaskSchema>;
 export type ExtractedTask = z.infer<typeof ExtractedTaskSchema>;
 export type InstructorResponse = z.infer<typeof InstructorResponseSchema>;
 export type AssistantResponse = z.infer<typeof AssistantResponseSchema>;
 export type TaskNoID = z.infer<typeof TaskNoIDSchema>
+export type Epic = z.infer<typeof EpicSchema>
+export type Epics = z.infer<typeof AllEpicsSchema>
+export type EpicStore = z.infer<typeof EpicStoreSchema>

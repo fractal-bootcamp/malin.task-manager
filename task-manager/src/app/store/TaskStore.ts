@@ -1,7 +1,9 @@
 import { create } from 'zustand'
 import type { TaskProps, TaskStatus } from '@/types/types'
+import { Epic, Epics, EpicStore } from '@/types/schemas';
 import { dummyTasks } from '@/lib/utils/dummyData'
 import { createId } from '@paralleldrive/cuid2';
+import { z } from "zod"
 
 interface TaskStore {
   tasks: TaskProps[]
@@ -13,7 +15,20 @@ interface TaskStore {
   setCreateModalOpen: (open: boolean) => void; // Function to change modal visibility
 }
 
+const dummyEpics = [
+  {id: "01",
+  description: "the first epic",
+  tasks}]
+
+export const useEpicStore = create<EpicStore>((set) => ({
+
+}))
+
+
+
+
 export const useTaskStore = create<TaskStore>((set) => ({
+  // task related actions
   tasks: dummyTasks,
   createTask: (taskData: Omit<TaskProps, 'id'>) => set(
     (state) => ({ 
