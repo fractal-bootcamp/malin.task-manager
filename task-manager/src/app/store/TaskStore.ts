@@ -16,9 +16,13 @@ export const taskStore = create<TaskState>((set) => ({
     (state) => ({ tasks: [...state.tasks, task] })),
   deleteTask: (taskId: string) => set(
     (state) => ({ tasks: state.tasks.filter(task => task.id !== taskId) })),
-  updateTask: (taskId: string, updatedTaskData: TaskProps) => set(
-    (state) => ({ tasks: state.tasks.map(
-      (task) => (task.id === taskId ? updatedTaskData : task)) })),
+  updateTask: (taskId: string, updatedTask: TaskProps) => set(
+    (state) => {
+      console.log('Updating task:', { taskId, updatedTask, currentTasks: state.tasks });
+      return { 
+        tasks: state.tasks.map(task => (task.id === taskId ? updatedTask : task))
+      };
+    }),
   updateTaskStatus: (taskId: string, newTaskStatus: TaskStatus) => set(
     (state) => ({ tasks: state.tasks.map(
       (task) => (task.id === taskId ? { ...task, status: newTaskStatus } : task)) }))

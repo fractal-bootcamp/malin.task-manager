@@ -3,6 +3,7 @@
 import { TaskCard } from "@/components/ui/TaskCard"
 import { taskStore } from "@/app/store/TaskStore";
 import { Droppable } from '@hello-pangea/dnd';
+import { TaskProps, TaskStatus } from "@/types/types";
 
 type TaskListProps = {
   byStatus: string;
@@ -10,9 +11,11 @@ type TaskListProps = {
 }
 
 export const TaskList: React.FC<TaskListProps> = ({ byStatus, bgColor = 'bg-gray-200' }) => {
-  const { tasks, deleteTask, updateTask } = taskStore()
+  const { tasks, createTask, deleteTask, updateTask, updateTaskStatus } = taskStore()
 
+  console.log('All tasks in store:', tasks);
   const tasksOfThisStatus = tasks.filter(task => task.status === byStatus)
+  console.log(`Tasks with status ${byStatus}:`, tasksOfThisStatus);
 
   return (
     <div className={`flex-1 flex-col mx-2 my-2 ${bgColor} p-4 rounded-2xl`}>
@@ -26,13 +29,17 @@ export const TaskList: React.FC<TaskListProps> = ({ byStatus, bgColor = 'bg-gray
           >
             {tasksOfThisStatus.map((task, index) => (
               <TaskCard
+                task={task}
                 key={task.id}
                 id={task.id}
                 index={index}
                 title={task.title}
                 description={task.description}
+                status={task.status}
                 onEdit={() => updateTask(task.id, task)}
                 onDelete={() => deleteTask(task.id)}
+                onUpdate={(taskId: string, updatedTask: TaskProps) => updateTask(taskId, updatedTask)}
+                onUpdateStatus={(newTaskStatus: TaskStatus) => updateTaskStatus(task.id, newTaskStatus)}
               />
             ))}
             {provided.placeholder}
