@@ -47,11 +47,28 @@ export function ChatWindow() {
       });
 
       const data: InstructorResponse = await response.json();
-      return { tasks: data.tasks }
       console.log('recieved', data)
+      return { tasks: data.tasks }
     } catch (error) {
       console.error('Error extracting tasks:', error);
       return { tasks: [] };
+    }
+  }
+
+  async function generateResponse(tasks: TaskNoID[], message: string): Promise<string> {
+    try {
+      const response = await fetch('/api/generate-response', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ tasks }),
+      });
+      const data: AssistantResponse = await response.json();
+      return data.agentResponse;
+    } catch (error) {
+      console.error('Error generating response:', error);
+      return 'Error generating response';
     }
   }
 
@@ -70,20 +87,26 @@ export function ChatWindow() {
       try {
         // Logic to handle the AI response
         if (userMessage) {
-          const extractTasks = await extractTasksFromMessage(userMessage.text)
-          console.log('we got this response:', extractTasks)
+          // First, extract tasks
+          const extractedTasks = await extractTasksFromMessage(userMessage.text);
+          setBufferTasks(extractedTasks.tasks);
+          console.log(extractedTasks)
+
+          // Then, generate response based on those tasks
+          const agentResponse = await generateResponse(extractedTasks.tasks, userMessage.text);
+          console.log(agentResponse)
           const agentMessage: Message = {
             msgId: Date.now(),
-            text: extractTasks.agentResponse,
+            text: agentResponse,
             isUser: false
-          }
+          };
+
           setMessages(prev => [...prev, agentMessage]);
-          setBufferTasks(extractTasks.tasks)
         }
       } catch (error) {
-        console.error('Error:', error)
+        console.error('Error:', error);
       } finally {
-        setIsLoading(false)  // Hide loading state
+        setIsLoading(false);
       }
     }
   }

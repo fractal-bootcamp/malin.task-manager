@@ -43,9 +43,7 @@ export const AssistantResponseSchema = z.object({
     • Third key point
 
     You're all set to get started! Take it one step at a time.
-    #
-    If the user message is unrelated to achieving a goal, respond with a message
-    asking them to specify a goal they would like help with.`)
+    #`)
 })
 
 // Types

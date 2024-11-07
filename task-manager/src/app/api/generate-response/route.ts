@@ -17,21 +17,23 @@ const instructor = Instructor<typeof anthropicClient>({
 
 export async function POST(request: Request) {
   try {
-    const { tasks } = await request.json();
+    const { tasks, message } = await request.json();
     const response = await instructor.chat.completions.create({
       model: "claude-3-5-sonnet-20241022",
       max_tokens: 500,
       messages: [
         {
           role: "user",
-          content: `Given these tasks: ${JSON.stringify(tasks)}, 
-          Generate a well-formatted response that includes:
+          content: `Given this user message ${JSON.stringify(message)} as context, and these tasks that we've generated: ${JSON.stringify(tasks)}, 
+          Create a well-formatted response for the user that includes:
           • An opening sentence introducing the plan\\n\\n
           • A bulleted list of key steps using "•" for bullets, with \\n
           • A brief closing encouragement
           
-          If the user message is unrelated to achieving a goal, respond with a message 
-          asking them to specify a goal they would like help with.`,
+          If the task is empty/undefined or the user message is unrelated to achieving a goal, respond with a message 
+          asking them to specify a goal they would like help with.
+          
+          Feel free to be creative in your response :)`,
         },
       ],
       response_model: {
