@@ -55,16 +55,7 @@ const config: Config = {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
-  		},
-  		animation: {
-  			'pulse': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-  		},
-  		keyframes: {
-  			pulse: {
-  				'0%, 100%': { opacity: '1' },
-  				'50%': { opacity: '.3' },
-  			},
-  		},
+  		}
   	}
   },
   plugins: [require("tailwindcss-animate")],
