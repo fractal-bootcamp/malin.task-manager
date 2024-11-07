@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useTaskStore } from "./store/TaskStore";
 import { CreateNewTaskModal } from "@/components/ui/CreateNewTaskModal"
 import { ChatWindow } from '@/components/ui/ChatWindow'
+import Link from 'next/link';
 
 export default function RootLayout({
   children,
@@ -36,14 +37,19 @@ export default function RootLayout({
         <nav className="border-b px-4 py-3 dark:border-gray-700 bg-lime-50">
           <div className="w-full flex items-center justify-between text-black dark:bg-gray-900 dark:text-white">
             <h1 className="font-mono text-3xl">Manage Them Tasks</h1>
-            <div>
-              <button
-                className="px-4 py-2 bg-red-300 text-white rounded-md hover:bg-pink-600 border-4 border-red-400"
-                onClick={() => setCreateModalOpen(true)}>
-                Plan With AI
-              </button>
+            <div className="flex gap-16">
+              <Link
+                href="/"
+                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                Kanban
+              </Link>
+              <Link
+                href="/all-tasks"
+                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                All Tasks
+              </Link>
             </div>
-            <div className="flex gap-4 ">
+            <div className="flex gap-4">
               <button
                 className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
                 onClick={() => setCreateModalOpen(true)}>
@@ -58,8 +64,10 @@ export default function RootLayout({
             </div>
           </div>
         </nav>
-        {children}
-        <div className="fixed bottom-4 right-4 w-full max-w-[18rem] h-[87vh] bg-white rounded-lg shadow-lg opacity-80">
+        <div className=" bg-rose-50">
+          {children}
+        </div>
+        <div className="fixed bottom-4 right-4 w-full max-w-[18rem] 2xl:max-w-[24rem] h-[88vh] bg-white rounded-lg shadow-lg opacity-80">
           <ChatWindow />
         </div>
         <CreateNewTaskModal />
