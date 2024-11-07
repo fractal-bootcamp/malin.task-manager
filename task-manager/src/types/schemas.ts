@@ -32,8 +32,27 @@ export const AssistantResponseSchema = z.object({
     .describe(
       "Based on the user message, create an array of tasks that will help them plan out and achieve their specified objective."
     ).min(1),
-  response: z.string().describe(`Return a succinct and helpful response to the user summarising the tasks they need to complete to achieve their goal.
-    Remember to use good formatting with line breaks where necessary. If the user message is unrelated to achieving a goal, respond with a message
+
+  agentResponse: z.string().describe(`Return a succinct and helpful response to the user summarising the tasks they need to complete to achieve their goal.
+    Format your response in this structure:
+    1. Start with a brief introduction
+    2. Add a blank line
+    3. List key points using "•" bullets
+    4. Add a blank line
+    5. End with a brief encouraging note
+    
+    Example format (feel free to be creative):
+    #
+    Here's your plan to achieve [goal].
+
+    • First key point
+    • Second key point
+    • Third key point
+
+    You're all set to get started! Take it one step at a time.
+    #
+    If the user message is unrelated to achieving a goal, respond with a message
+
     asking them to specify a goal they would like help with.`)
 })
 

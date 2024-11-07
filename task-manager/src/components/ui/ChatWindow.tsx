@@ -12,7 +12,30 @@ export function ChatWindow() {
   const [messages, setMessages] = useState<Message[]>([])
   const [inputText, setInputText] = useState('')
 
-  const handleSend = () => {
+  // Use the client.chat.completions.create method to send a prompt and extract the data into the Zod object
+  async function extractTasksFromMessage(message: string): Promise<AssistantResponse> {
+    try {
+      const response = await fetch('/api/extract-tasks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message }),
+      });
+
+      const data: AssistantResponse = await response.json();
+      console.log('recieved', data)
+
+      // validate the response against our schema using zod
+      const validatedData = AssistantResponseSchema.parse(data);
+      return validatedData;
+    } catch (error) {
+      console.error('Error extracting tasks:', error);
+      return { tasks: [], agentResponse: 'Error extracting tasks' };
+    }
+  }
+
+  const handleSend = async () => {
     if (inputText.trim()) {
       const newMessage: Message = {
         id: Date.now(),
@@ -21,7 +44,25 @@ export function ChatWindow() {
       }
       setMessages([...messages, newMessage])
       setInputText('')
-      // Here you would typically add logic to handle the AI response
+
+      setIsLoading(true)
+
+      try {
+        // Logic to handle the AI response
+        if (userMessage) {
+          const extractTasks = await extractTasksFromMessage(userMessage.text)
+          console.log('we got this response:', extractTasks)
+          const agentMessage: Message = {
+            msgId: Date.now(),
+            text: extractTasks.agentResponse,
+            isUser: false
+          }
+          setMessages(prev => [...prev, agentMessage]);
+        }
+      } finally {
+        setIsLoading(false)  // This ensures loading is set to false even if an error occurs
+      }
+
     }
   }
 
@@ -40,9 +81,9 @@ export function ChatWindow() {
             className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-[80%] p-3 rounded-lg ${message.isUser
-                ? 'bg-rose-50 text-gray'
-                : 'bg-green-100 text-gray'
+              className={`max-w-[80%] p-3 rounded-lg whitespace-pre-wrap ${message.isUser
+                  ? 'bg-rose-50 text-gray'
+                  : 'bg-green-100 text-gray'
                 }`}
             >
               {message.text}
