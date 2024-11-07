@@ -8,6 +8,7 @@ const API_KEY= process.env.ANTHROPIC_API_KEY
 const anthropicClient = createLLMClient({
   provider: "anthropic",
   apiKey: API_KEY, // Use environment variable
+
 });
 
 const instructor = Instructor<typeof anthropicClient>({
@@ -18,6 +19,7 @@ const instructor = Instructor<typeof anthropicClient>({
 export async function POST(request: Request) {
   try {
     const { message } = await request.json();
+
     const response = await instructor.chat.completions.create({
       model: "claude-3-5-sonnet-20241022",
       max_tokens: 500,
@@ -48,10 +50,12 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json({ tasks: response.tasks });
+
   } catch (error) {
     console.error('Error:', error);
     return NextResponse.json({ error: 'Failed to process request' }, { status: 500 });
   }
+  
   // try {
   //   const { message } = await request.json();
   //   const response = await instructor.chat.completions.create({
