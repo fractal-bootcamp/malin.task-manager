@@ -2,11 +2,11 @@
 
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import { TaskList } from "@/components/ui/TaskList";
-import { taskStore } from "@/app/store/TaskStore";
+import { useTaskStore } from "@/app/store/TaskStore";
 import { TaskStatus } from '@/types/types';
 
 export function DragDropTaskList() {
-  const { updateTask, tasks } = taskStore();
+  const { updateTask, tasks } = useTaskStore();
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;

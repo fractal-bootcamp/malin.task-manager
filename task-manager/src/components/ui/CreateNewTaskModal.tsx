@@ -11,41 +11,34 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { TaskProps, TaskStatus } from "@/types/types"
-import { taskStore } from "@/app/store/TaskStore"
+import { useTaskStore } from "@/app/store/TaskStore"
 import type { TaskCardProps, CreateTaskCard } from "@/types/types";  // Import the type
 
-export function CreateNewTaskModal({
-  title,
-  description,
-  status,
-  onCreate
-}: CreateTaskCard) {  // Use the imported type
+export function CreateNewTaskModal() {  // Use the imported type
+
+  const { createTask, isCreateModalOpen, setCreateModalOpen } = useTaskStore(); // Get modal state and setter
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    const updatedTask = {
-      ...task,
-      id: task.id,
+    const newTask = {
       title: (document.getElementById('title') as HTMLInputElement).value,
       description: (document.getElementById('description') as HTMLTextAreaElement).value,
       status: (document.getElementById('status') as HTMLSelectElement).value as TaskStatus
     }
-
-    console.log('Submitting updated task:', updatedTask);
-    onUpdate(task.id, updatedTask);
+    createTask(newTask);
+    setCreateModalOpen(false);
   }
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="sm">Edit</Button>
-      </DialogTrigger>
+    <Dialog
+      open={isCreateModalOpen} // if open is true, modal is visible
+      onOpenChange={setCreateModalOpen} // effectively calls setCreateModalOpen(false)
+    >
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit Task</DialogTitle>
+          <DialogTitle>Create New Task</DialogTitle>
           <DialogDescription>
-            Make changes to the task here. Click save when you're done.
+            Create a new task. Click save when you're done.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
@@ -54,7 +47,7 @@ export function CreateNewTaskModal({
               <Label htmlFor="name" className="text-right">
                 Title
               </Label>
-              <Input id="title" defaultValue={task.title} className="col-span-3" />
+              <Input id="title" defaultValue={""} className="col-span-3" />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="description" className="text-right">
@@ -62,7 +55,7 @@ export function CreateNewTaskModal({
               </Label>
               <textarea
                 id="description"
-                defaultValue={task.description}
+                defaultValue={""}
                 className="col-span-3 min-h-[100px] w-full text-sm rounded-md border border-input px-3 py-2" />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -71,7 +64,7 @@ export function CreateNewTaskModal({
               </Label>
               <select
                 id="status"
-                defaultValue={task.status}
+                defaultValue={"Pending"}
                 className="col-span-3 w-full rounded-md border border-input px-3 py-2"
               >
                 <option value="Pending">Pending</option>
@@ -82,7 +75,7 @@ export function CreateNewTaskModal({
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit">Save changes</Button>
+            <Button type="submit">Create Task</Button>
           </DialogFooter>
         </form>
       </DialogContent>

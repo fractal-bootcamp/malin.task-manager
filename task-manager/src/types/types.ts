@@ -22,3 +22,11 @@ export type TaskCardProps = {
   onUpdate: (taskId: string, updatedTask: TaskProps) => void;
   onUpdateStatus: (newStatus: TaskStatus) => void;
 }
+
+export type CreateTaskCard = {
+  title: string;
+  description: string;
+  status: TaskStatus;
+  id: string;  // new prop needed for draggable
+  onCreate: (newTask: Omit<TaskProps, 'id'>) => void;
+}

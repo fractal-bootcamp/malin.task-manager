@@ -1,7 +1,7 @@
 'use client';
 
 import { TaskCard } from "@/components/ui/TaskCard"
-import { taskStore } from "@/app/store/TaskStore";
+import { useTaskStore } from "@/app/store/TaskStore";
 import { Droppable } from '@hello-pangea/dnd';
 import { TaskProps, TaskStatus } from "@/types/types";
 
@@ -11,7 +11,7 @@ type TaskListProps = {
 }
 
 export const TaskList: React.FC<TaskListProps> = ({ byStatus, bgColor = 'bg-gray-200' }) => {
-  const { tasks, createTask, deleteTask, updateTask, updateTaskStatus } = taskStore()
+  const { tasks, createTask, deleteTask, updateTask, updateTaskStatus } = useTaskStore()
 
   console.log('All tasks in store:', tasks);
   const tasksOfThisStatus = tasks.filter(task => task.status === byStatus)

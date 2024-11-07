@@ -1,6 +1,8 @@
 'use client'
 import "./globals.css";
 import { useState, useEffect } from "react";
+import { useTaskStore } from "./store/TaskStore";
+import { CreateNewTaskModal } from "@/components/ui/CreateNewTaskModal"
 
 export default function RootLayout({
   children,
@@ -8,6 +10,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const [darkMode, setDarkMode] = useState(false);
+
+  const setCreateModalOpen = useTaskStore(state => state.setCreateModalOpen)
 
   // Handle theme toggle
   const toggleTheme = () => {
@@ -41,13 +45,16 @@ export default function RootLayout({
               <button className="px-4 py-2 rounded-md hover:bg-gray-100">
                 Sign In
               </button>
-              <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+              <button
+                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                onClick={() => setCreateModalOpen(true)}>
                 Create
               </button>
             </div>
           </div>
         </nav>
         {children}
+        <CreateNewTaskModal />
       </body>
     </html>
   );

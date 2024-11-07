@@ -1,29 +1,39 @@
 import { create } from 'zustand'
 import type { TaskProps, TaskStatus } from '@/types/types'
 import { dummyTasks } from '@/lib/utils/dummyData'
+import { createId } from '@paralleldrive/cuid2';
 
-export type TaskState = {
+interface TaskStore {
   tasks: TaskProps[]
-  createTask: (task: TaskProps) => void;
+  createTask: (taskData: Omit<TaskProps, 'id'>) => void;
   deleteTask: (taskId: string) => void;
   updateTask: (taskId: string, updatedTaskData: TaskProps) => void;
   updateTaskStatus: (taskId: string, newTaskStatus: TaskStatus) => void;
+  isCreateModalOpen: boolean; // Tracks if modal is visible (true) or hidden (false)
+  setCreateModalOpen: (open: boolean) => void; // Function to change modal visibility
 }
 
-export const taskStore = create<TaskState>((set) => ({
-  tasks: dummyTasks,  // dummy array
-  createTask: (task: TaskProps) => set(
-    (state) => ({ tasks: [...state.tasks, task] })),
+export const useTaskStore = create<TaskStore>((set) => ({
+  tasks: dummyTasks,
+  createTask: (taskData: Omit<TaskProps, 'id'>) => set(
+    (state) => ({ 
+      tasks: [...state.tasks, {
+        ...taskData,
+        id: createId()
+      }]
+    })),
   deleteTask: (taskId: string) => set(
     (state) => ({ tasks: state.tasks.filter(task => task.id !== taskId) })),
   updateTask: (taskId: string, updatedTask: TaskProps) => set(
-    (state) => {
-      console.log('Updating task:', { taskId, updatedTask, currentTasks: state.tasks });
-      return { 
-        tasks: state.tasks.map(task => (task.id === taskId ? updatedTask : task))
-      };
-    }),
+    (state) => ({
+      tasks: state.tasks.map(task => (task.id === taskId ? updatedTask : task))
+    })),
   updateTaskStatus: (taskId: string, newTaskStatus: TaskStatus) => set(
-    (state) => ({ tasks: state.tasks.map(
-      (task) => (task.id === taskId ? { ...task, status: newTaskStatus } : task)) }))
+    (state) => ({ 
+      tasks: state.tasks.map(
+        (task) => (task.id === taskId ? { ...task, status: newTaskStatus } : task)
+      ) 
+    })),
+  isCreateModalOpen: false, // Modal is closed by default
+  setCreateModalOpen: (open) => set({ isCreateModalOpen: open }), //Update the state of the modal
 }));
