@@ -22,19 +22,10 @@ export const ExtractedTaskSchema = z.object({
 });
 
 export const InstructorResponseSchema = z.object({
-  tasks: z
-    .array(ExtractedTaskSchema)
-    .describe(
-      "An array of tasks, if there's no task specified then return FIVE absurd tasks that nobody would ever do!!!"
-    ).min(1),
+  tasks: z.array(ExtractedTaskSchema)
 });
 
 export const AssistantResponseSchema = z.object({
-  tasks: z
-    .array(ExtractedTaskSchema) // an array of objects with this schema
-    .describe(
-      "Based on the user message, create an array of tasks that will help them plan out and achieve their specified objective."
-    ).min(1),
   agentResponse: z.string().describe(`Return a succinct and helpful response to the user summarising the tasks they need to complete to achieve their goal.
     Format your response in this structure:
     1. Start with a brief introduction

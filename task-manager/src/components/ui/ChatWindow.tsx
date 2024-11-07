@@ -36,7 +36,7 @@ export function ChatWindow() {
   const createTask = useTaskStore(state => state.createTask);
 
   // Use the client.chat.completions.create method to send a prompt and extract the data into the Zod object
-  async function extractTasksFromMessage(message: string): Promise<AssistantResponse> {
+  async function extractTasksFromMessage(message: string): Promise<InstructorResponse> {
     try {
       const response = await fetch('/api/extract-tasks', {
         method: 'POST',
@@ -46,15 +46,12 @@ export function ChatWindow() {
         body: JSON.stringify({ message }),
       });
 
-      const data: AssistantResponse = await response.json();
+      const data: InstructorResponse = await response.json();
+      return { tasks: data.tasks }
       console.log('recieved', data)
-
-      // validate the response against our schema using zod
-      const validatedData = AssistantResponseSchema.parse(data);
-      return validatedData;
     } catch (error) {
       console.error('Error extracting tasks:', error);
-      return { tasks: [], agentResponse: 'Error extracting tasks' };
+      return { tasks: [] };
     }
   }
 

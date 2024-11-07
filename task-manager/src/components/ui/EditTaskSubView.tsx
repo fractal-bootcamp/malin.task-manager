@@ -32,7 +32,6 @@ export function EditTaskModal({
       status: (document.getElementById('status') as HTMLSelectElement).value as TaskStatus
     }
 
-    console.log('Submitting updated task:', updatedTask);
     onUpdate(task.id, updatedTask);
     setOpen(false);
   }

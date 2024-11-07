@@ -19,9 +19,7 @@ interface AllTasksProps {
 export const TaskList: React.FC<TaskListProps> = ({ byStatus, bgColor = 'bg-gray-200' }) => {
   const { tasks, createTask, deleteTask, updateTask, updateTaskStatus } = useTaskStore()
 
-  console.log('All tasks in store:', tasks);
   const tasksOfThisStatus = tasks.filter(task => task.status === byStatus)
-  console.log(`Tasks with status ${byStatus}:`, tasksOfThisStatus);
 
   return (
     <div className={`h-fit flex-col my-2 ${bgColor} p-4 rounded-2xl max-w-[18rem]`}>
