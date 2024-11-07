@@ -3,7 +3,7 @@ import Instructor from "@instructor-ai/instructor";
 import { InstructorResponseSchema, AssistantResponseSchema } from '@/types/schemas';
 import { NextResponse } from 'next/server';
 
-const API_KEY= ""
+const API_KEY= process.env.ANTHROPIC_API_KEY
 
 const anthropicClient = createLLMClient({
   provider: "anthropic",
@@ -17,6 +17,7 @@ const instructor = Instructor<typeof anthropicClient>({
 });
 
 export async function POST(request: Request) {
+  console.log('key', API_KEY)
   try {
     const { message } = await request.json();
 
