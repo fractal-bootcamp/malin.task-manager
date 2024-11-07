@@ -5,9 +5,11 @@ import { createLLMClient } from "llm-polyglot"
 import Instructor from "@instructor-ai/instructor";
 import AnthropicClient from "@anthropic-ai/sdk";
 import { z } from "zod"
+import { useTaskStore } from "@/app/store/TaskStore"
 import {
   AssistantResponse,
   Task,
+  TaskNoID,
   ExtractedTask,
   InstructorResponse,
   TaskStatusEnum,
@@ -28,6 +30,10 @@ export function ChatWindow() {
   const [messages, setMessages] = useState<Message[]>([])
   const [inputText, setInputText] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [bufferTasks, setBufferTasks] = useState<TaskNoID[]>()
+  const [isTasksAdded, setIsTasksAdded] = useState<boolean>(false)
+  // import createTask function from store
+  const createTask = useTaskStore(state => state.createTask);
 
   // Use the client.chat.completions.create method to send a prompt and extract the data into the Zod object
   async function extractTasksFromMessage(message: string): Promise<AssistantResponse> {
@@ -74,10 +80,17 @@ export function ChatWindow() {
             isUser: false
           }
           setMessages(prev => [...prev, agentMessage]);
+          setBufferTasks(extractTasks.tasks)
         }
       } finally {
         setIsLoading(false)  // This ensures loading is set to false even if an error occurs
       }
+    }
+  }
+
+  const handleAddTasks = () => {
+    if (bufferTasks) {
+      bufferTasks.map(task => createTask(task))
     }
   }
 
@@ -95,13 +108,29 @@ export function ChatWindow() {
             key={message.msgId}
             className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
           >
-            <div
-              className={`max-w-[80%] p-3 rounded-lg whitespace-pre-wrap ${message.isUser
+            <div className="flex flex-col">
+              <div
+                className={`max-w-[80%] p-3 rounded-lg whitespace-pre-wrap ${message.isUser
                   ? 'bg-rose-50 text-gray'
                   : 'bg-green-100 text-gray'
-                }`}
-            >
-              {message.text}
+                  }`}
+              >
+                {message.text.replace(/\\n/g, '\n')}
+              </div>
+              {!message.isUser && (
+                <button
+                  className={`mt-2 px-4 py-2 bg-blue-400 text-white rounded-md w-fit
+                    hover:bg-rose-400 active:bg-rose-700 active:transform active:scale-95 
+                    transition-opacity duration-300 ease-in-out
+                    ${isTasksAdded ? 'opacity-0' : 'opacity-100'}`}
+                  onClick={() => {
+                    setIsTasksAdded(true);
+                    setTimeout(handleAddTasks, 300);
+                  }}
+                >
+                  Add To Tasks
+                </button>
+              )}
             </div>
           </div>
         ))}

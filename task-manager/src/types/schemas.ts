@@ -1,7 +1,7 @@
 import { z } from "zod"
 
 // zod schemas
-export const TaskStatusEnum = z.enum(["TODO", "IN_PROGRESS", "DONE"]);
+export const TaskStatusEnum = z.enum(["Pending", "In-Progress", "Completed", "Archived"]);
 export const PriorityEnum = z.enum(["HIGH", "MEDIUM", "LOW"]);
 
 export const TaskSchema = z.object({
@@ -12,9 +12,12 @@ export const TaskSchema = z.object({
   //priority: PriorityEnum,
 });
 
+export const TaskNoIDSchema = TaskSchema.omit({ id: true })
+
 export const ExtractedTaskSchema = z.object({
   title: z.string().describe("Make this a zany title"),
   description: z.string().describe("Make this a really really boring description"),
+  status: TaskStatusEnum.describe("This should ALWAYS be 'Pending'")
   //priority: PriorityEnum,
 });
 
@@ -59,3 +62,4 @@ export type Task = z.infer<typeof TaskSchema>;
 export type ExtractedTask = z.infer<typeof ExtractedTaskSchema>;
 export type InstructorResponse = z.infer<typeof InstructorResponseSchema>;
 export type AssistantResponse = z.infer<typeof AssistantResponseSchema>;
+export type TaskNoID = z.infer<typeof TaskNoIDSchema>
