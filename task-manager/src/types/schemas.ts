@@ -49,14 +49,13 @@ export const AssistantResponseSchema = z.object({
 export const EpicSchema = z.object({
   id: z.string(),
   description: z.string(),
-  tasks: z.array(TaskSchema)
+  tasks: z.array(z.string())
 })
 
 export const AllEpicsSchema = z.array(EpicSchema);
 
 const EpicStoreSchema = z.object({
   epics: z.array(EpicSchema),
-  tasks: z.array(TaskSchema),
   createEpic: z.function()
     .args(EpicSchema.omit({ id: true }))
     .returns(z.void()),

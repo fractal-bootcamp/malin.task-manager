@@ -1,8 +1,10 @@
-import { AllTasks } from "@/components/ui/TaskList";
+'use client'
+
+import { AllTasks } from "@/components/ui/AllTasks";
 
 const Page = () => {
   return (
-    <div className="container mx-auto p-4">
+    <div className="mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">All Tasks</h1>
       <AllTasks />
     </div>

@@ -27,11 +27,10 @@ export function DragDropTaskList() {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="w-full flex">
-        <div className="w-[80%] flex space-x-2 sm:space-x-3 md:space-x-4 lg:space-x-4 2xl:space-x-20">
+        <div className="w-[75%] grid grid-cols-3 gap-4">
           <TaskList byStatus="Pending" bgColor="bg-blue-100" />
           <TaskList byStatus="In-Progress" bgColor="bg-indigo-100" />
           <TaskList byStatus="Completed" bgColor="bg-purple-100" />
-          <TaskList byStatus="Archived" bgColor="bg-violet-100 opacity-40" />
         </div>
       </div>
     </DragDropContext>
