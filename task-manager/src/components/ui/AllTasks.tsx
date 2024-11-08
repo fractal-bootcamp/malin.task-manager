@@ -30,45 +30,59 @@ export const AllTasks = () => {
   });
 
   return (
-    <div className="flex flex-col gap-4 p-4">
-      <div className="flex gap-4 mb-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">
-              Status: {selectedStatus}
-              <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            {statuses.map((status) => (
-              <DropdownMenuItem
-                key={status}
-                onClick={() => setSelectedStatus(status)}
-              >
-                {status}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+    <div className="flex flex-col gap-4 p-4 w-[75%]">
+      <div className="flex justify-between">
+        <div className="flex gap-4 mb-4">
+          {/* Status Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                Status: {selectedStatus}
+                <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {statuses.map((status) => (
+                <DropdownMenuItem
+                  key={status}
+                  onClick={() => setSelectedStatus(status)}
+                >
+                  {status}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">
-              Epic: {selectedEpic}
-              <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            {epics.map((epic) => (
-              <DropdownMenuItem
-                key={epic}
-                onClick={() => setSelectedEpic(epic)}
-              >
-                {epic}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+          {/* Epic Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                Epic: {selectedEpic}
+                <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {epics.map((epic) => (
+                <DropdownMenuItem
+                  key={epic}
+                  onClick={() => setSelectedEpic(epic)}
+                >
+                  {epic}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        <div className="flex">
+          <Button
+            variant="outline"
+            size="lg"
+            className="border-2 border-gray-300 bg-rose-100 text-gray-500"
+            onClick={() => setIsEditModalOpen(true)}
+          >
+            Create Epic
+          </Button>
+        </div>
       </div>
 
       {editingTask && (
@@ -83,7 +97,7 @@ export const AllTasks = () => {
       {filteredTasks.map((task) => (
         <div
           key={task.id}
-          className="bg-white p-4 rounded-lg shadow w-[75%]"
+          className="bg-white p-4 rounded-lg shadow"
         >
           <h3 className="font-semibold">{task.title}</h3>
           <p className="text-gray-600 text-sm">{task.description}</p>

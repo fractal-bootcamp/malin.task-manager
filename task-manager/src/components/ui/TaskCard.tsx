@@ -83,6 +83,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
               <Button
                 variant="outline"
                 size="sm"
+                className="text-neutral-500"
                 onClick={() => setIsEditModalOpen(true)}
               >
                 Edit
