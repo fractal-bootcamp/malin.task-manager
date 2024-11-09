@@ -18,9 +18,12 @@ import type { TaskCardProps } from "@/types/types";  // Import the type
 export function EditTaskModal({
   task,
   onUpdate,
-}: TaskCardProps) {  // Use the imported type
-  const [open, setOpen] = useState(false);
-
+  open,
+  setOpen,
+}: TaskCardProps & {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -38,9 +41,6 @@ export function EditTaskModal({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="sm">Edit</Button>
-      </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Edit Task</DialogTitle>

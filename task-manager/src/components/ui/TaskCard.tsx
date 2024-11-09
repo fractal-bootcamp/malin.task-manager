@@ -3,6 +3,7 @@
 import * as React from "react"
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react"
 import { Draggable } from '@hello-pangea/dnd';
+import { useState } from 'react';
 
 import { EditTaskModal } from "./EditTaskSubView";
 import { Button } from "@/components/ui/button"
@@ -48,6 +49,8 @@ export const TaskCard: React.FC<TaskCardProps> = ({
   onUpdate,
   onUpdateStatus
 }) => {
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
   return (
     <Draggable draggableId={id} index={index}>
       {(provided) => (
@@ -62,7 +65,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
               <CardTitle className="text-sm font-medium line-clamp-2 min-h-[3rem] max-h-24 overflow-hidden">{title}</CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription className="text-xs min-h-[3rem] max-h-24 overflow-y-auto line-clamp-3 pb-1">{description}</CardDescription>
+              <CardDescription className="text-xs min-h-[3rem] max-h-24 overflow-y-auto line-clamp-3 mb-8">{description}</CardDescription>
               <div className=" min-h-[2rem]">
                 {task.epic && (
                   <CardTitle
@@ -77,6 +80,14 @@ export const TaskCard: React.FC<TaskCardProps> = ({
             </CardContent>
 
             <CardFooter className="flex justify-between">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsEditModalOpen(true)}
+              >
+                Edit
+              </Button>
+
               <EditTaskModal
                 task={task}
                 title={title}
@@ -87,7 +98,10 @@ export const TaskCard: React.FC<TaskCardProps> = ({
                 onDelete={onDelete}
                 onUpdate={onUpdate}
                 onUpdateStatus={onUpdateStatus}
+                open={isEditModalOpen}
+                setOpen={setIsEditModalOpen}
               />
+
               <Button variant="outline" size="sm" onClick={() => onDelete(task.id)}>
                 <Trash2 color="#f21d37" strokeWidth={1} />
               </Button>

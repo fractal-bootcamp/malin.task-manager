@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
+import { EditTaskModal } from "./EditTaskSubView";
 
 export const AllTasks = () => {
   const { tasks, deleteTask, updateTask } = useTaskStore();
@@ -18,6 +19,9 @@ export const AllTasks = () => {
 
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [selectedEpic, setSelectedEpic] = useState("All");
+
+  const [editingTask, setEditingTask] = useState<TaskProps | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const filteredTasks = tasks.filter((task) => {
     const statusMatch = selectedStatus === "All" || task.status === selectedStatus;
@@ -67,6 +71,15 @@ export const AllTasks = () => {
         </DropdownMenu>
       </div>
 
+      {editingTask && (
+        <EditTaskModal
+          task={editingTask}
+          onUpdate={updateTask}
+          open={isEditModalOpen}
+          setOpen={setIsEditModalOpen}
+        />
+      )}
+
       {filteredTasks.map((task) => (
         <div
           key={task.id}
@@ -75,6 +88,9 @@ export const AllTasks = () => {
           <h3 className="font-semibold">{task.title}</h3>
           <p className="text-gray-600 text-sm">{task.description}</p>
           <p className="text-gray-500 text-xs mt-1">Status: {task.status}</p>
+          {task.epic && (
+            <p className="text-gray-500 text-xs mt-1">Epic: {task.epic}</p>
+          )}
           <div className="flex gap-2 mt-2">
             <button
               onClick={() => deleteTask(task.id)}
@@ -83,7 +99,10 @@ export const AllTasks = () => {
               Delete
             </button>
             <button
-              onClick={() => updateTask(task.id, task)}
+              onClick={() => {
+                setEditingTask(task);
+                setIsEditModalOpen(true);
+              }}
               className="text-blue-500 text-sm"
             >
               Edit
