@@ -1,9 +1,7 @@
 import { create } from 'zustand'
-import type { TaskProps, TaskStatus } from '@/types/types'
-import { Epic, Epics, EpicStore, Task } from '@/types/schemas';
+import { Epic, Epics, EpicStore, Task, TaskProps, TaskStatus } from '@/types/schemas';
 import { dummyTasks } from '@/lib/utils/dummyData'
 import { createId } from '@paralleldrive/cuid2';
-import { z } from "zod"
 
 interface TaskStore {
   tasks: Task[]

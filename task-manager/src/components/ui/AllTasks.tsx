@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTaskStore } from "@/app/store/TaskStore";
-import { TaskProps, TaskStatus } from "@/types/types";
+import { TaskProps, TaskStatus } from "@/types/schemas";
+import { dummyEpics } from "@/app/store/EpicStore";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,10 +16,10 @@ import { useEpicStore } from "@/app/store/EpicStore";
 
 export const AllTasks = () => {
   const { tasks, deleteTask, updateTask } = useTaskStore();
-  const { setCreateModalOpen } = useEpicStore();
+  const { setCreateModalOpen, epics } = useEpicStore();
 
   const statuses = ["All", "Pending", "In-Progress", "Completed", "Archived"];
-  const epics = ["All", "Getting a Puppy", "01"]; // You might want to fetch these from your epic store
+  const epicDescriptions = ["All", ...epics.map(epic => epic.description)];
 
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [selectedEpic, setSelectedEpic] = useState("All");
@@ -60,17 +61,17 @@ export const AllTasks = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">
-                Epic: {selectedEpic}
+                Epic: {epics.find(epic => epic.id === selectedEpic)?.description}
                 <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {epics.map((epic) => (
                 <DropdownMenuItem
-                  key={epic}
-                  onClick={() => setSelectedEpic(epic)}
+                  key={epic.id}
+                  onClick={() => setSelectedEpic(epic.id)}
                 >
-                  {epic}
+                  {epic.description}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
@@ -108,7 +109,11 @@ export const AllTasks = () => {
           <p className="text-gray-600 text-sm">{task.description}</p>
           <p className="text-gray-500 text-xs mt-1">Status: {task.status}</p>
           {task.epic && (
-            <p className="text-gray-500 text-xs mt-1">Epic: {task.epic}</p>
+            <p className="text-gray-500 text-xs mt-1">Epic:
+              {
+                epics.find(epic => epic.id === task.epic)?.description
+              }
+            </p>
           )}
           <div className="flex gap-2 mt-2">
             <button

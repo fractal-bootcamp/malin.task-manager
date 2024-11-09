@@ -10,9 +10,8 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { TaskProps, TaskStatus, Task, TaskNoID } from "@/types/schemas"
+import { TaskProps, TaskStatus, Task, TaskNoID, TaskCardProps, CreateTaskCard } from "@/types/schemas"
 import { useTaskStore } from "@/app/store/TaskStore"
-import type { TaskCardProps, CreateTaskCard } from "@/types/types";  // Import the type
 
 export function CreateNewTaskModal() {  // Use the imported type
 

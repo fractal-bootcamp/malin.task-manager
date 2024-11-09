@@ -4,15 +4,7 @@ import { dummyTasks } from '@/lib/utils/dummyData'
 import { createId } from '@paralleldrive/cuid2';
 import { useTaskStore } from './TaskStore';
 
-const dummyEpics: Epics = [
-  {id: "01",
-  description: "the first epic",
-  tasks: [dummyTasks[0].id, dummyTasks[1].id, dummyTasks[2].id]
-},
-{id: "02",
-  description: "the second epic",
-  tasks: [dummyTasks[3].id, dummyTasks[4].id, dummyTasks[5].id]
-}]
+export const dummyEpics: Epics = []
 
 export const useEpicStore = create<EpicStore>((set, get) => ({
   epics: dummyEpics,

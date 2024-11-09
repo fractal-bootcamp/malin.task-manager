@@ -3,7 +3,7 @@
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import { TaskList } from "@/components/ui/TaskList";
 import { useTaskStore } from "@/app/store/TaskStore";
-import { TaskStatus } from '@/types/types';
+import { TaskStatus } from '@/types/schemas';
 
 export function DragDropTaskList() {
   const { updateTask, tasks } = useTaskStore();
