@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from "react"
-import { MoreHorizontal, Pencil } from "lucide-react"
+import { MoreHorizontal, Pencil, Trash2 } from "lucide-react"
 import { Draggable } from '@hello-pangea/dnd';
 
 import { EditTaskModal } from "./EditTaskSubView";
@@ -63,6 +63,9 @@ export const TaskCard: React.FC<TaskCardProps> = ({
                 onUpdate={onUpdate}
                 onUpdateStatus={onUpdateStatus}
               />
+              <Button variant="outline" size="sm" onClick={() => onDelete(task.id)}>
+                <Trash2 color="#f21d37" strokeWidth={1} />
+              </Button>
             </CardFooter>
           </Card>
         </div>

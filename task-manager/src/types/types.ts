@@ -18,7 +18,7 @@ export type TaskCardProps = {
   id: string;  // new prop needed for draggable
   index: number;  // new prop needed for draggable
   onEdit: () => void;
-  onDelete: () => void;
+  onDelete: (taskId: string) => void;
   onUpdate: (taskId: string, updatedTask: TaskProps) => void;
   onUpdateStatus: (newStatus: TaskStatus) => void;
 }

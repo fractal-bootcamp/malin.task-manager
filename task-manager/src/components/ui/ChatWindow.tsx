@@ -64,7 +64,7 @@ export function ChatWindow() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ tasks }),
+        body: JSON.stringify({ tasks, message }),
       });
       const data: AssistantResponse = await response.json();
       return data.agentResponse;
