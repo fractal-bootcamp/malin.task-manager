@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { TaskProps, TaskStatus } from "@/types/types"
+import { TaskProps, TaskStatus, Task, TaskNoID } from "@/types/schemas"
 import { useTaskStore } from "@/app/store/TaskStore"
 import type { TaskCardProps, CreateTaskCard } from "@/types/types";  // Import the type
 
@@ -20,7 +20,7 @@ export function CreateNewTaskModal() {  // Use the imported type
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const newTask = {
+    const newTask: TaskNoID = {
       title: (document.getElementById('title') as HTMLInputElement).value,
       description: (document.getElementById('description') as HTMLTextAreaElement).value,
       status: (document.getElementById('status') as HTMLSelectElement).value as TaskStatus

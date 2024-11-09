@@ -10,9 +10,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { EditTaskModal } from "./EditTaskSubView";
+import { CreateNewEpicModal } from "./CreateEpicModal";
+import { useEpicStore } from "@/app/store/EpicStore";
 
 export const AllTasks = () => {
   const { tasks, deleteTask, updateTask } = useTaskStore();
+  const { setCreateModalOpen } = useEpicStore();
 
   const statuses = ["All", "Pending", "In-Progress", "Completed", "Archived"];
   const epics = ["All", "Getting a Puppy", "01"]; // You might want to fetch these from your epic store
@@ -78,12 +81,14 @@ export const AllTasks = () => {
             variant="outline"
             size="lg"
             className="border-2 border-gray-300 bg-rose-100 text-gray-500"
-            onClick={() => setIsEditModalOpen(true)}
+            onClick={() => setCreateModalOpen(true)}
           >
             Create Epic
           </Button>
         </div>
       </div>
+
+      <CreateNewEpicModal />
 
       {editingTask && (
         <EditTaskModal

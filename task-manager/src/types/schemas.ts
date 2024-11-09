@@ -9,6 +9,7 @@ export const TaskSchema = z.object({
   title: z.string(),
   description: z.string(),
   status: TaskStatusEnum,
+  epic: z.string().optional()
   //priority: PriorityEnum,
 });
 
@@ -72,10 +73,15 @@ const EpicStoreSchema = z.object({
       EpicSchema.pick({ id: true }), 
       TaskSchema.pick({ id: true }))
     .returns(z.void()),
+  isCreateModalOpen: z.boolean(),
+  setCreateModalOpen: z.function()
+    .args(z.boolean())
+    .returns(z.void())
 })
 
 // Types
 export type Task = z.infer<typeof TaskSchema>;
+export type TaskStatus = z.infer<typeof TaskStatusEnum>;
 export type ExtractedTask = z.infer<typeof ExtractedTaskSchema>;
 export type InstructorResponse = z.infer<typeof InstructorResponseSchema>;
 export type AssistantResponse = z.infer<typeof AssistantResponseSchema>;
@@ -83,3 +89,34 @@ export type TaskNoID = z.infer<typeof TaskNoIDSchema>
 export type Epic = z.infer<typeof EpicSchema>
 export type Epics = z.infer<typeof AllEpicsSchema>
 export type EpicStore = z.infer<typeof EpicStoreSchema>
+
+export type TaskProps = {
+  id: string;
+  title: string;
+  description: string;
+  status: TaskStatus;
+  // createdAt: Date;
+  // updatedAt: Date;
+  //dueDate: Date | null;
+}
+
+export type TaskCardProps = {
+  task: Task
+  title: string;
+  description: string;
+  status: TaskStatus;
+  id: string;  // new prop needed for draggable
+  index: number;  // new prop needed for draggable
+  onEdit: () => void;
+  onDelete: (taskId: string) => void;
+  onUpdate: (taskId: string, updatedTask: Task) => void;
+  onUpdateStatus: (newStatus: TaskStatus) => void;
+}
+
+export type CreateTaskCard = {
+  title: string;
+  description: string;
+  status: TaskStatus;
+  id: string;  // new prop needed for draggable
+  onCreate: (newTask: Omit<Task, 'id'>) => void;
+}

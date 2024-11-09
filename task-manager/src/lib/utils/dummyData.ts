@@ -13,7 +13,7 @@ export const dummyTasks: Task[] = [
     title: "Implement Authentication for Pets",
     description: "Add pawprint recognition and treat-based 2FA for good boys and girls",
     status: "In-Progress",
-    epic: "Getting a Puppy Getting a Puppy Getting a Puppy Getting a Puppy"
+    epic: "Getting a Puppy"
   },
   {
     id: "task-3",
@@ -48,26 +48,25 @@ export const dummyTasks: Task[] = [
     title: "Unit Test Components While Blindfolded",
     description: "Writing tests using only keyboard and hoping for the best. What could go wrong?",
     status: "Archived",
-    epic: ""
   },
-  // {
-  //   id: "task-8",
-  //   title: "Setup CI/CD Pipeline Powered by Hamsters",
-  //   description: "Replace GitHub Actions with an army of caffeinated hamsters in wheels",
-  //   status: "Completed",
-  // },
-  // {
-  //   id: "task-9",
-  //   title: "Implement Search Feature That Reads Minds",
-  //   description: "Users shouldn't have to type, they should just think about what they want",
-  //   status: "In-Progress",
-  // },
-  // {
-  //   id: "task-10",
-  //   title: "Mobile Responsiveness for Alternative Dimensions",
-  //   description: "Ensure site works on phones, tablets, and parallel universe devices",
-  //   status: "Pending",
-  // },
+  {
+    id: "task-8",
+    title: "Setup CI/CD Pipeline Powered by Hamsters",
+    description: "Replace GitHub Actions with an army of caffeinated hamsters in wheels",
+    status: "Completed",
+  },
+  {
+    id: "task-9",
+    title: "Implement Search Feature That Reads Minds",
+    description: "Users shouldn't have to type, they should just think about what they want",
+    status: "In-Progress",
+  },
+  {
+    id: "task-10",
+    title: "Mobile Responsiveness for Alternative Dimensions",
+    description: "Ensure site works on phones, tablets, and parallel universe devices",
+    status: "Pending",
+  },
   // {
   //   id: "task-11",
   //   title: "Error Handling with Comfort Food",

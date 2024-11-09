@@ -9,7 +9,7 @@ interface TaskStore {
   tasks: Task[]
   createTask: (taskData: Omit<TaskProps, 'id'>) => void;
   deleteTask: (taskId: string) => void;
-  updateTask: (taskId: string, updatedTaskData: TaskProps) => void;
+  updateTask: (taskId: string, updatedTaskData: Task) => void;
   updateTaskStatus: (taskId: string, newTaskStatus: TaskStatus) => void;
   isCreateModalOpen: boolean; // Tracks if modal is visible (true) or hidden (false)
   setCreateModalOpen: (open: boolean) => void; // Function to change modal visibility
