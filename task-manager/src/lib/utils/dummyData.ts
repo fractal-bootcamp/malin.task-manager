@@ -1,47 +1,54 @@
-import { TaskProps } from "@/types/types";
+import { TaskSchema, Task } from "@/types/schemas";
 
-export const dummyTasks: TaskProps[] = [
+export const dummyTasks: Task[] = [
   {
     id: "task-1",
     title: "Design User Interface for Time-Traveling Users",
     description: "Create wireframes that work in both 2024 and 1985, just in case",
     status: "Pending",
+    epic: ""
   },
   {
     id: "task-2",
     title: "Implement Authentication for Pets",
     description: "Add pawprint recognition and treat-based 2FA for good boys and girls",
     status: "In-Progress",
+    epic: "Getting a Puppy Getting a Puppy Getting a Puppy Getting a Puppy"
   },
   {
     id: "task-3",
     title: "Write API Documentation in Haiku",
     description: "Endpoints flow like streams / POST requests bring new dreams / GET returns JSON",
     status: "Completed",
+    epic: "01"
   },
   {
     id: "task-4",
     title: "Fix Navigation Bug (It's Actually a Spider)",
     description: "Found an actual spider living in the code. Need to relocate it humanely",
     status: "Archived",
+    epic: "Getting a Puppy"
   },
   {
     id: "task-5",
     title: "Database Schema Design: Medieval Edition",
     description: "Design tables as if they were designed by a 15th-century monk with illuminated manuscripts",
     status: "Archived",
+    epic: "01"
   },
   {
     id: "task-6",
     title: "Optimize Image Loading for Dial-Up Nostalgia",
     description: "Add authentic 90s loading sounds and pixelated progressive loading",
     status: "Archived",
+    epic: "01"
   },
   {
     id: "task-7",
     title: "Unit Test Components While Blindfolded",
     description: "Writing tests using only keyboard and hoping for the best. What could go wrong?",
     status: "Archived",
+    epic: ""
   },
   // {
   //   id: "task-8",
