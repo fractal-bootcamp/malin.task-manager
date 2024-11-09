@@ -50,6 +50,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
   onUpdateStatus
 }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const epics = useEpicStore(state => state.epics);
 
   return (
     <Draggable draggableId={id} index={index}>
@@ -74,7 +75,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
                       border: `1px solid ${getColorFromString(task.epic)}`,
                       color: getColorFromString(task.epic)
                     }}
-                  >{`Epic: ${task.epic}`}</CardTitle>
+                  >{`Epic: ${epics.find(epic => epic.id === task.epic)?.description}`}</CardTitle>
                 )}
               </div>
             </CardContent>
