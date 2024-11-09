@@ -9,15 +9,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
+import { EditTaskModal } from "./EditTaskSubView";
+import { CreateNewEpicModal } from "./CreateEpicModal";
+import { useEpicStore } from "@/app/store/EpicStore";
 
 export const AllTasks = () => {
   const { tasks, deleteTask, updateTask } = useTaskStore();
+  const { setCreateModalOpen } = useEpicStore();
 
   const statuses = ["All", "Pending", "In-Progress", "Completed", "Archived"];
   const epics = ["All", "Getting a Puppy", "01"]; // You might want to fetch these from your epic store
 
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [selectedEpic, setSelectedEpic] = useState("All");
+
+  const [editingTask, setEditingTask] = useState<TaskProps | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const filteredTasks = tasks.filter((task) => {
     const statusMatch = selectedStatus === "All" || task.status === selectedStatus;
@@ -26,55 +33,83 @@ export const AllTasks = () => {
   });
 
   return (
-    <div className="flex flex-col gap-4 p-4">
-      <div className="flex gap-4 mb-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">
-              Status: {selectedStatus}
-              <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            {statuses.map((status) => (
-              <DropdownMenuItem
-                key={status}
-                onClick={() => setSelectedStatus(status)}
-              >
-                {status}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+    <div className="flex flex-col gap-4 p-4 w-[75%]">
+      <div className="flex justify-between">
+        <div className="flex gap-4 mb-4">
+          {/* Status Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                Status: {selectedStatus}
+                <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {statuses.map((status) => (
+                <DropdownMenuItem
+                  key={status}
+                  onClick={() => setSelectedStatus(status)}
+                >
+                  {status}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">
-              Epic: {selectedEpic}
-              <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            {epics.map((epic) => (
-              <DropdownMenuItem
-                key={epic}
-                onClick={() => setSelectedEpic(epic)}
-              >
-                {epic}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+          {/* Epic Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                Epic: {selectedEpic}
+                <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {epics.map((epic) => (
+                <DropdownMenuItem
+                  key={epic}
+                  onClick={() => setSelectedEpic(epic)}
+                >
+                  {epic}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        <div className="flex">
+          <Button
+            variant="outline"
+            size="lg"
+            className="border-2 border-gray-300 bg-rose-100 text-gray-500"
+            onClick={() => setCreateModalOpen(true)}
+          >
+            Create Epic
+          </Button>
+        </div>
       </div>
+
+      <CreateNewEpicModal />
+
+      {editingTask && (
+        <EditTaskModal
+          task={editingTask}
+          onUpdate={updateTask}
+          open={isEditModalOpen}
+          setOpen={setIsEditModalOpen}
+        />
+      )}
 
       {filteredTasks.map((task) => (
         <div
           key={task.id}
-          className="bg-white p-4 rounded-lg shadow w-[75%]"
+          className="bg-white p-4 rounded-lg shadow"
         >
           <h3 className="font-semibold">{task.title}</h3>
           <p className="text-gray-600 text-sm">{task.description}</p>
           <p className="text-gray-500 text-xs mt-1">Status: {task.status}</p>
+          {task.epic && (
+            <p className="text-gray-500 text-xs mt-1">Epic: {task.epic}</p>
+          )}
           <div className="flex gap-2 mt-2">
             <button
               onClick={() => deleteTask(task.id)}
@@ -83,7 +118,10 @@ export const AllTasks = () => {
               Delete
             </button>
             <button
-              onClick={() => updateTask(task.id, task)}
+              onClick={() => {
+                setEditingTask(task);
+                setIsEditModalOpen(true);
+              }}
               className="text-blue-500 text-sm"
             >
               Edit
