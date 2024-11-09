@@ -61,11 +61,17 @@ export const AllTasks = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">
-                Epic: {epics.find(epic => epic.id === selectedEpic)?.description}
+                Epic: {selectedEpic === "All" ? "All" : epics.find(epic => epic.id === selectedEpic)?.description}
                 <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
+              <DropdownMenuItem
+                key="all"
+                onClick={() => setSelectedEpic("All")}
+              >
+                All
+              </DropdownMenuItem>
               {epics.map((epic) => (
                 <DropdownMenuItem
                   key={epic.id}
