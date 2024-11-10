@@ -14,7 +14,7 @@ import { useTaskStore } from "@/app/store/TaskStore"
 import { useEpicStore } from "@/app/store/EpicStore"
 
 export function CreateNewEpicModal() {
-  const { tasks } = useTaskStore();
+  const { tasks, updateTask } = useTaskStore();
   const { createEpic, isCreateModalOpen, setCreateModalOpen } = useEpicStore();
 
   const handleSubmit = (e: React.FormEvent) => {
